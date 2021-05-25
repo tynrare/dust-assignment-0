@@ -1,0 +1,9 @@
+{
+    "fonts": {"FiraSansExtraCondensed": "fonts/Comfortaa-VariableFont_wght.ttf"},
+    "configs": {
+        "localization": "configs/localization.json"
+    },
+    "meshes": {
+        "tank": "/assets/graphics/Tank.glb"
+    }
+}

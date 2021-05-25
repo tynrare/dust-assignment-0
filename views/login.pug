@@ -1,0 +1,29 @@
+extends layout
+
+block headcontent
+  link(rel="stylesheet", href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css")
+
+block content
+  h1 Login
+  div !{message}
+
+  | Login as dusta;dusta than click: 
+  a(href="/") /home
+
+  br
+
+  | Click 
+  a(href="/logout") /logout
+  |  to logout
+
+  form(method="post", action="/login")
+    p
+      label Username:
+      input(type="text", name="username")
+    p
+      label Password:
+      input(type="text", name="password")
+    p(style="display:flex;")
+      input(type="submit", name="operation", value="Login") 
+      input(type="submit", name="operation", value="Register")
+      
