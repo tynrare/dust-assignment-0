@@ -23,6 +23,8 @@ $ npm start
 
 ## Implemented
 
+* Basic server-client architecture
+* Server login & restrictions
 * Character movement & interact
 * Camera movement
 
