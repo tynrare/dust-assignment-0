@@ -3,7 +3,7 @@
 
 # How to download
 
-Use basic `$ https://github.com/tynrare/dust-assignment-0.git`
+Use basic `$ git clone https://github.com/tynrare/dust-assignment-0.git`
 
 Or download zip directly from github
 
