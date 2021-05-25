@@ -17,7 +17,7 @@ Or download zip directly from github
 $ npm install
 $ npm start
 ```
-* than you can access http://localhost:3000/game/
+* than you can access http://localhost:3000/
 
 # Features
 
