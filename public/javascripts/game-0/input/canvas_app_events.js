@@ -254,6 +254,8 @@ class TimeEvents {
 	 */
 	init() {
 		this.nextFrame();
+
+		return this;
 	}
 
 	/**
@@ -298,10 +300,10 @@ class TimeEvents {
 						el.appendChild(a);
 						el.appendChild(b);
 
-						document.getElementById('app-root').appendChild(el);
+						document.querySelector('body').appendChild(el);
 					}
 
-					this.owner.events.emit('critical_error');
+					this.events.emit('critical_error');
 				} else {
 					this.nextFrame();
 				}
@@ -316,17 +318,12 @@ class TimeEvents {
  * Class wraps and emits canvas, window, and input events
  */
 class CanvasAppEvents {
-	/**
-	 * @override
-	 */
+	constructor() {
+		this.input = new InputEvents().init();
+		this.window = this.input.windowEvents;
+		this.time = new TimeEvents().init();
+	}
 }
 
-const input = new InputEvents().init();;
-const properties = {
-	input,
-	window: input.windowEvents,
-	time: new TimeEvents().init(),
-};
-
-export default properties; 
+export default new CanvasAppEvents(); 
 export { CanvasAppEvents, WindowEvents, TimeEvents };

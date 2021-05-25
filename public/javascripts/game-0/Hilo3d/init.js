@@ -1,6 +1,6 @@
-var Stats = require("./stats.js");
+const Stats = require("./stats.js");
 const Hilo3d = require('hilo3d');
-//var OrbitControls = require("./OrbitControls.js");
+import CanvasAppEvents from '../input/canvas_app_events'
 var directionLight;
 
 if (!window.game) {
@@ -31,7 +31,6 @@ if (!window.game) {
         window.game.stage.resize(innerWidth, innerHeight);
     }
 
-
     directionLight = new Hilo3d.DirectionalLight({
         color: new Hilo3d.Color().fromHEX('#e15b26'),
         direction: new Hilo3d.Vector3(.5, -1, 0)
@@ -42,16 +41,12 @@ if (!window.game) {
         amount: .5
     }).addTo(window.game.stage);
 
-    var ticker = window.game.ticker = new Hilo3d.Ticker(60);
+    /*
+    var ticker = window.game.ticker = new Hilo3d.Ticker(0);
     ticker.addTick(window.game.stage);
     ticker.addTick(Hilo3d.Tween);
     ticker.addTick(Hilo3d.Animation);
     window.game.stats = new Stats(ticker, window.game.stage.renderer.renderInfo);
-    /*
-    orbitControls = new OrbitControls(window.game.stage, {
-        isLockMove: true,
-        isLockZ: true
-    });
     */
 
     ['init', 'initFailed'].forEach(function(eventName){
@@ -61,7 +56,7 @@ if (!window.game) {
     });
 
     setTimeout(function() {
-        ticker.start(true);
+        //ticker.start(true);
         window.game.gl =  window.game.renderer.gl;
     }, 10);
 

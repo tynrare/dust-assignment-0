@@ -4,11 +4,21 @@ import { BasicTopDownCamera } from './input/index'
 import DefaultDevHiloEnvMap from './gameplay/dev_default_env'
 import CharacterTank from './gameplay/character_tank';
 import HiloDebugHelper from './Hilo3d/hilo_debug_helper';
+import CanvasAppEvents from './input/canvas_app_events'
 
 function main() {
     Hilo3d.AliAMCExtension.useAuto = true;
     Hilo3d.AliAMCExtension.useWASM = true;
     Hilo3d.AliAMCExtension.useWebWorker = true;
+
+    function tick(){
+        const hardcodedDt = 10;
+        stage.tick(hardcodedDt);
+        requestAnimationFrame(tick);
+    }
+    tick();
+    CanvasAppEvents.time.events.on('frame', ()=>{
+    });
 
     stage.addChild(new Hilo3d.AxisHelper({
         size: 1
