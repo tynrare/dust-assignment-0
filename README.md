@@ -1,3 +1,6 @@
+![game-pic](/dev/docs/game-screenshot-0.png)
+
+
 # How to download
 
 Use basic `$ https://github.com/tynrare/dust-assignment-0.git`
