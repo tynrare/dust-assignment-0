@@ -29,7 +29,7 @@ class CharacterTank {
     init() {
         this.cache.glbScene = window.game.resmanager.getSceneClone('tank');
         this.hilo.addChild(this.cache.glbScene);
-        this.hilo.rotationY = Math.PI;
+        this.hilo.rotationY = 180;
 
 		CanvasAppEvents.input.events.on('left', (evt) => {
             this.cache.rotationMovement = evt.down ? 1 : 0;
