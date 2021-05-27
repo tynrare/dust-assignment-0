@@ -1,7 +1,7 @@
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
-var cookieParser = require('cookie-parser');
+//var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var session = require('express-session');
 
@@ -16,14 +16,16 @@ app.set('view engine', 'pug');
 
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+app.use(express.urlencoded({ extended: true }));
+//app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
 app.use(session({
   resave: false, // don't save session if unmodified
-  saveUninitialized: false, // don't create session until something stored
+  saveUninitialized: true, // don't create session until something stored
   secret: 'secret secret 1235'
 }));
+
 app.use(function(req, res, next){
   var err = req.session.error;
   var msg = req.session.success;

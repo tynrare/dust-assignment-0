@@ -4,6 +4,10 @@ import CanvasAppEvents from '../input/canvas_app_events'
 var directionLight;
 
 if (!window.game) {
+    Hilo3d.AliAMCExtension.useAuto = true;
+    Hilo3d.AliAMCExtension.useWASM = true;
+    Hilo3d.AliAMCExtension.useWebWorker = true;
+
     window.game = { ambientLight: null, camera: null, stage: null, renderer: null, gl: null, ticker: null, stats: null, canvas: null }
 
     window.game.camera = new Hilo3d.PerspectiveCamera({

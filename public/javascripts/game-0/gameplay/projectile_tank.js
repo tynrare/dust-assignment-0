@@ -13,7 +13,10 @@ class ProjectileTank {
         speed: 1
     }
 
-    init(start, target) {
+    ownerid = 0
+
+    init(start, target, ownerid) {
+        this.ownerid = ownerid; 
         this.cache.target.copy(target);
         this.cache.start.copy(start);
         this.cache.mesh = window.game.debugDraw.makeSphere(7);

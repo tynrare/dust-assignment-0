@@ -7,6 +7,8 @@
 var app = require('../app');
 var debug = require('debug')('dust-test-0:server');
 var http = require('http');
+var wsServer = require('../server/websockets');
+var { restrict } = require('../public/javascripts/lib-0')
 
 /**
  * Get port from environment and store in Express.
@@ -20,6 +22,12 @@ app.set('port', port);
  */
 
 var server = http.createServer(app);
+
+server.on('upgrade', (request, socket, head) => {
+  wsServer.handleUpgrade(request, socket, head, (socket) => {
+    wsServer.emit('connection', socket, request);
+  });
+});
 
 /**
  * Listen on provided port, on all network interfaces.

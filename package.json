@@ -16,7 +16,8 @@
     "http-errors": "~1.6.3",
     "morgan": "~1.9.1",
     "pbkdf2-password": "^1.2.1",
-    "pug": "2.0.0-beta11"
+    "pug": "2.0.0-beta11",
+    "ws": "^7.4.6"
   },
   "devDependencies": {
     "esmify": "^2.1.1"
