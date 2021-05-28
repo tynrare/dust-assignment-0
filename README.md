@@ -27,8 +27,9 @@ $ npm start
 * Server login & restrictions
 * Character movement & interact
 * Camera movement
+* Websockets real-time multiplayer
 
 ## Todo
 
-* Websockets multiplayer
+* Better multiplayer architecture
 * Cleanup
