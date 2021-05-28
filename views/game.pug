@@ -2,6 +2,12 @@ extends layout
 
 
 block content
+  div(class="game onscreen" id="youaredeadMessage")
+    a You are dead
+    br
+    a(href="/game") restart
+  div(id="fragsMessage")
+    a Frags: 0
   div(id="container")
 
   script(src="/game.js")

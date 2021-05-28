@@ -32,8 +32,24 @@ wsServer.on('connection', (socket, request) => {
       case 'spawnprojectile':
         broadcast('spawnprojectile', Object.assign({userid: m.userid}, m.data))
         break;
+
+      // --- APPLTDAMAGE
+      case 'applydamage':
+        broadcast('applydamage', m.data)
+        break;
+      
+      // --- CHARACTERDEAD
+      case 'characterdead':
+        broadcast('characterdead', m.data)
+        break;
     }
 
+  });
+
+  socket.on('close', function close() {
+        delete clients[socket.userid];
+        delete transforms[socket.userid];
+        broadcast('despawnplayer', { userid: socket.userid });
   });
 });
 

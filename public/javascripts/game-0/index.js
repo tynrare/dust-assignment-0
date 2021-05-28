@@ -11,12 +11,6 @@ import { Vector3 } from 'hilo3d';
 import ProjectileTank from './gameplay/projectile_tank';
 
 function main() {
-    function tick(){
-        const hardcodedDt = 10;
-        stage.tick(hardcodedDt);
-        requestAnimationFrame(tick);
-    }
-    tick();
 
     stage.addChild(new Hilo3d.AxisHelper({
         size: 1
@@ -25,6 +19,7 @@ function main() {
     stage.addChild(new DefaultDevHiloEnvMap().init())
 
     const characters = {};
+    const projectiles = [];
     const resmanager = new ResourcesManager();
     const multplmanager = new MultiplayerManager();
     const cameramanager = new BasicTopDownCamera().init(camera);
@@ -33,6 +28,7 @@ function main() {
 
     function spawnCharacter(id) {
         const character = new CharacterTank();
+        character.hilo.position.set(Math.random() * 50 - 25, 0, Math.random() * 50 - 25)
         characters[id] = character;
         stage.addChild(character.init(id, id == multplmanager.userid).hilo);
 
@@ -45,6 +41,10 @@ function main() {
 
         multplmanager.events.on('spawnplayer', (message) => {
            spawnCharacter(message.userid);
+        });
+        multplmanager.events.on('despawnplayer', (message) => {
+            characters[message.userid].dispose();
+            delete characters[message.userid];
         });
         multplmanager.events.on('gametick', (message) => {
             for(const i in message) {
@@ -65,9 +65,66 @@ function main() {
                 new Vector3(message.aimPosition[0], message.aimPosition[1], message.aimPosition[2]),
                 message.userid
                 );
+                projectiles.push(projectile);
             stage.addChild(projectile.hilo);
         });
+
+        multplmanager.events.on('applydamage', (message) => {
+            characters[message.to].applyDamage(message.by);
+        });
+
+        let frags = 0;
+        const kills = [];
+        multplmanager.events.on('characterdead', (message) => {
+            if(message.who === multplmanager.userid) {
+                multplmanager.dispose();
+                characters[message.who].dispose();
+                delete characters[message.who];
+                document.getElementById('youaredeadMessage').style.display = 'unset';
+            }
+            if(message.by === multplmanager.userid && kills.indexOf(message.who) < 0) {
+                kills.push(message.who);
+                document.querySelector("#fragsMessage a").innerHTML = `Frags: ${++frags}`;
+            }
+        });
     });
+
+
+    // --- GAMELOOP
+    function tick(){
+        const hardcodedDt = 10;
+        try {
+            stage.tick(hardcodedDt);
+        } catch(err) {
+            console.error(err);
+            return;
+        }
+        
+        // Projectiles collisions
+        for (const p in projectiles) {
+            const projectile = projectiles[p];
+            
+            if (!projectile.hilo.parent) {
+                projectiles.splice(p, 1);
+                continue;
+            }
+
+            if (projectile.ownerid != multplmanager.userid) continue;
+
+            for (const c in characters) {
+                const character = characters[c];
+                if(character.userid === projectile.ownerid) continue;
+
+                if(character.hilo.position.distance(projectile.hilo.position) <= 3) {
+                    window.game.multplmanager.send('applydamage', { by: projectile.ownerid, to: character.userid });
+                    projectiles.splice(p, 1);
+                }
+            }
+        }
+
+        requestAnimationFrame(tick);
+    }
+    tick();
 
     window.game.cameramanager = cameramanager;
     window.game.resmanager = resmanager;

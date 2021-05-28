@@ -24,6 +24,10 @@ class MultiplayerManager {
         return this;
     }
 
+    dispose() {
+        this.client.close();
+    }
+
     // shoot (position, target)
     // enter
     // update (position, rotation, towerRotation)
@@ -45,11 +49,20 @@ class MultiplayerManager {
             case 'spawnplayer':
                 this.events.emit('spawnplayer', message.data)
                 break;
+            case 'despawnplayer':
+                this.events.emit('despawnplayer', message.data)
+                break;
             case 'gametick':
                 this.events.emit('gametick', message.data);
                 break;
             case 'spawnprojectile':
                 this.events.emit('spawnprojectile', message.data)
+                break;
+            case 'applydamage':
+                this.events.emit('applydamage', message.data)
+                break;
+            case 'characterdead':
+                this.events.emit('characterdead', message.data)
                 break;
         }
     }

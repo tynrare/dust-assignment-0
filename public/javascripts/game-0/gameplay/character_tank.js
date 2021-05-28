@@ -1,6 +1,7 @@
 import { Node, math, Vector3, Vector2 } from 'hilo3d';
 import properties from '../input/canvas_app_events';
 var { stage, camera } = require("../Hilo3d/init.js")
+import { map } from '../math';
 import CanvasAppEvents from '../input/canvas_app_events'
 import { intersectRayOnPlane } from '../math';
 import ProjectileTank from './projectile_tank';
@@ -18,7 +19,8 @@ class CharacterTank {
 
     properties = {
         movementSpeed: 0.1,
-        rotationSpeed: 1
+        rotationSpeed: 1,
+        maxHealth: 10
     }
 
     cache = {
@@ -29,15 +31,26 @@ class CharacterTank {
         glbScene: null,
         aimPosition: new Vector3(),
         towerRotation: new Vector3(),
+        health: -1
     }
 
     init(userid, local = true) {
+        // --- VARIABLES
+        this.cache.health = this.properties.maxHealth;
         this.userid = userid;
         this.local = local;
         this.cache.glbScene = window.game.resmanager.getSceneClone('tank');
         this.hilo.addChild(this.cache.glbScene);
         this.hilo.rotationY = 180;
 
+        // --- DOM
+        const element = document.createElement('span');
+        const container =  document.getElementById('container')
+        element.classList = 'game onscreen';
+        container.insertBefore(element, container.firstChild);
+        this.healthDom = element
+
+        // --- LOCAL LOGIC
         if (local) {
             CanvasAppEvents.input.events.on('left', (evt) => {
                 this.cache.rotationMovement = evt.down ? 1 : 0;
@@ -63,17 +76,33 @@ class CharacterTank {
 
             this.cache.debugMesh = window.game.debugDraw.makeSphere(10, '#555555');
 
-            this.hilo.onUpdate = () => {
+
+        }
+
+        this.hilo.onUpdate = () => {
+            if (local) {
                 this.updateInputs();
                 this.updateMouse();
                 this.sendRemove();
             }
-        }  else {
-            this.hilo.onUpdate = () => {
-            }
+            this.updateGui();
         }
 
         return this;
+    }
+
+    updateGui() {
+        const vec = this.cache.Vec3_tmp0.copy(this.hilo.position);
+        vec.y += 2;
+        var pos = camera.projectVector(vec, stage.width, stage.height);
+            
+        const cameradist = window.game.cameramanager.cache.shift.length();
+
+        //element.style.transform = 'translate3d(' + pos.x + 'px,' + pos.y + 'px, 0px)';
+        this.healthDom.style.left = pos.x + 'px';
+        this.healthDom.style.top = pos.y + 'px';
+        this.healthDom.style.fontSize = 30 - map(cameradist, 5, 50, 0, 20) + 'px';
+        this.healthDom.innerHTML = `${this.cache.health}/${this.properties.maxHealth}`;
     }
 
     updateRemote(data) {
@@ -129,8 +158,17 @@ class CharacterTank {
         })
     }
 
+    applyDamage(by) {
+        this.cache.health -= 1;
+        if(this.cache.health <= 0) {
+            window.game.multplmanager.send('characterdead', { who: this.userid, by });
+        }
+    }
+
     dispose() {
+        this.cache.debugMesh?.removeFromParent();
         this.hilo.removeFromParent();
+        this.healthDom.parentNode.removeChild(this.healthDom);
     }
 }
 

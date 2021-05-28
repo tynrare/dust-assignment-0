@@ -471,6 +471,16 @@ export function clamp(val, min, max) {
 }
 
 /**
+ */
+ export function map(value, inmin, inmax, outmin, outmax) {
+	const clamped = clamp(value, inmin, inmax);
+	let a = (clamped - inmin) / inmax;
+	let b = (outmax - outmin) * a + outmin;
+
+	return b;
+}
+
+/**
  * @param {number} a initial value
  * @param {number} b target value
  * @param {number} t factor

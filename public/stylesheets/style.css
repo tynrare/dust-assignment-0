@@ -16,3 +16,29 @@ canvas {
 .msg.success {
   color: #57e957;
 }
+
+.game.onscreen {
+  position: absolute;
+  font-size: 30px;
+  transform: translate(-50%,-50%);
+}
+
+#youaredeadMessage {
+  left: 50%;
+  top: 10%;
+  background-color: white;
+  padding: 10px;
+  border-radius: 10px;
+  text-align: center;
+  display: none;
+}
+
+#fragsMessage {
+  position: absolute;
+  margin: 10px;
+  font-size: 30px;
+  background-color: #ffffff9e;
+  padding: 10px;
+  border-radius: 10px;
+}
+}

@@ -37,7 +37,9 @@ class ProjectileTank {
     }
 
     dispose () {
-        this.hilo.removeFromParent();
+        requestAnimationFrame(()=>{
+            this.hilo.removeFromParent()
+        });
     }
 }
 
