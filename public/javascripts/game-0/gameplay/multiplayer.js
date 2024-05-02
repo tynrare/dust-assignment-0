@@ -11,7 +11,8 @@ class MultiplayerManager {
 	events = new EventsBase();
 
     init() {
-        this.client = new WebSocket('ws://localhost:3000');
+        const loc = location.host;
+        this.client = new WebSocket(`ws://${loc}`);
 
         this.client.onopen = () => {
             this.send('login', loginData);
