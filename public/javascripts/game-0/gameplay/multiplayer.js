@@ -12,7 +12,8 @@ class MultiplayerManager {
 
     init() {
         const loc = location.host;
-        this.client = new WebSocket(`wss://${loc}`);
+        const protocol = location.protocol == "https:" ? "wss" : "ws";
+        this.client = new WebSocket(`${protocol}://${loc}`);
 
         this.client.onopen = () => {
             this.send('login', loginData);
