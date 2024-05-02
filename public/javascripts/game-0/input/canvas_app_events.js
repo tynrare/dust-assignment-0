@@ -95,7 +95,7 @@ class InputEvents {
 	 * @fires input#rightdown
 	 */
 	init() {
-		this.windowEvents.init();
+		this.windowEvents.init(canvas);
 
 		this.windowEvents.events.on('keydown', (event) => {
 			if (!event.repeat) {
